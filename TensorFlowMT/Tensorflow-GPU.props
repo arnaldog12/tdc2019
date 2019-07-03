@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\tensorflow\tensorflow-gpu\;C:\tensorflow\tensorflow-gpu\\build;C:\tensorflow\tensorflow-gpu\\build\external\eigen_archive;C:\tensorflow\tensorflow-gpu\\third_party\eigen3;C:\tensorflow\tensorflow-gpu\\build\protobuf\src\protobuf\src;C:\tensorflow\tensorflow-gpu\\build\nsync\src\nsync\public;C:\tensorflow\tensorflow-gpu\\build\snappy\src\snappy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>COMPILER_MSVC;NOMINMAX;TENSORFLOW_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>zlib\install\lib\zlibstatic.lib;gif\install\lib\giflib.lib;png\install\lib\libpng12_static.lib;jpeg\install\lib\libjpeg.lib;lmdb\install\lib\lmdb.lib;jsoncpp\src\jsoncpp\src\lib_json\Release\jsoncpp.lib;farmhash\install\lib\farmhash.lib;fft2d\\src\lib\fft2d.lib;highwayhash\install\lib\highwayhash.lib;nsync\install\lib\nsync.lib;protobuf\src\protobuf\Release\libprotobuf.lib;re2\src\re2\Release\re2.lib;sqlite\install\lib\sqlite.lib;snappy\src\snappy\Release\snappy.lib;tf_cc.lib;tf_cc_ops.lib;tf_cc_framework.lib;tf_core_cpu.lib;tf_core_direct_session.lib;tf_core_framework.lib;tf_core_kernels.lib;tf_core_lib.lib;tf_core_ops.lib;tf_cc_while_loop.lib;tf_stream_executor.lib;tf_protos_cc.lib;tf_core_gpu_kernels.lib;grpc++_unsecure.lib;grpc_unsecure.lib;gpr.lib;wsock32.lib;ws2_32.lib;shlwapi.lib;cudart_static.lib;cuda.lib;cublas.lib;cublas_device.lib;cufft.lib;curand.lib;cupti.lib;cusolver.lib;cudnn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\tensorflow\tensorflow-gpu\build\tf_cc.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_cc_ops.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_cc_framework.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_core_cpu.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_core_direct_session.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_core_framework.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_core_kernels.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_core_lib.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_core_ops.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_cc_while_loop.dir\Release;C:\tensorflow\tensorflow-gpu\build\tf_stream_executor.dir\Release;C:\tensorflow\tensorflow-gpu\build\grpc\src\grpc\Release;C:\tensorflow\tensorflow-gpu\build\Release;C:\tensorflow\tensorflow-gpu\build\;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\x64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\extras\CUPTI\libx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/machine:x64 
+/ignore:4049 /ignore:4197 /ignore:4217 /ignore:4221
+/WHOLEARCHIVE:tf_cc.lib 
+/WHOLEARCHIVE:tf_cc_framework.lib
+/WHOLEARCHIVE:tf_cc_ops.lib 
+/WHOLEARCHIVE:tf_core_cpu.lib
+/WHOLEARCHIVE:tf_core_direct_session.lib 
+/WHOLEARCHIVE:tf_core_framework.lib
+/WHOLEARCHIVE:tf_core_kernels.lib 
+/WHOLEARCHIVE:tf_core_lib.lib
+/WHOLEARCHIVE:tf_core_ops.lib   
+/WHOLEARCHIVE:tf_stream_executor.lib
+/WHOLEARCHIVE:libjpeg.lib 
+/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
