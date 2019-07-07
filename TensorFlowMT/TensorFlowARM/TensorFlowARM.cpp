@@ -1,21 +1,40 @@
-// TensorFlowARM.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include "TensorFlowARM.h"
 
-#include "pch.h"
-#include <iostream>
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "TensorFlowARM", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "TensorFlowARM", __VA_ARGS__))
 
-int main()
-{
-    std::cout << "Hello World!\n"; 
+extern "C" {
+	/* This trivial function returns the platform ABI for which this dynamic native library is compiled.*/
+	const char * TensorFlowARM::getPlatformABI()
+	{
+	#if defined(__arm__)
+	#if defined(__ARM_ARCH_7A__)
+	#if defined(__ARM_NEON__)
+		#define ABI "armeabi-v7a/NEON"
+	#else
+		#define ABI "armeabi-v7a"
+	#endif
+	#else
+		#define ABI "armeabi"
+	#endif
+	#elif defined(__i386__)
+		#define ABI "x86"
+	#else
+		#define ABI "unknown"
+	#endif
+		LOGI("This dynamic shared library is compiled with ABI: %s", ABI);
+		return "This native library is compiled with ABI: %s" ABI ".";
+	}
+
+	void TensorFlowARM()
+	{
+	}
+
+	TensorFlowARM::TensorFlowARM()
+	{
+	}
+
+	TensorFlowARM::~TensorFlowARM()
+	{
+	}
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
