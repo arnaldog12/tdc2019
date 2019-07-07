@@ -7,30 +7,29 @@
 
 using namespace tensorflow;
 
-GraphDef loadGraph(std::string protobufFile);
-Session* createSession(GraphDef graphDef, SessionOptions options);
 template <class T> Tensor mat2tensor(cv::Mat image, tensorflow::DataType type);
 std::vector<cv::Mat> tensor2mat(Tensor tensor);
-std::vector<cv::Mat> run(Session *session, std::vector<std::pair<std::string, Tensor>> feedDict, std::vector<std::string> outputTensorNames, std::vector<std::string> targetNodeNames);
 
 int main()
 {
-	cv::VideoCapture cap(1);
-	if (!cap.isOpened())
-		if (!cap.open(0)) return 0;
+	cv::VideoCapture cap(0);
+	if (!cap.isOpened()) return 0;
 
 	cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
 	cap.set(cv::CAP_PROP_FRAME_WIDTH, 480);
 
-	GraphDef graphDef = loadGraph("../../models/best_model_ever.pb");
-	Session *session = createSession(graphDef, SessionOptions());
+	GraphDef graphDef;
+	TF_CHECK_OK(ReadBinaryProto(Env::Default(), "../../models/best_model_ever.pb", &graphDef));
 
-	cv::Mat frame;
+	Session *session;
+	TF_CHECK_OK(NewSession(SessionOptions(), &session));
+	TF_CHECK_OK(session->Create(graphDef));
+
+	cv::Mat frame, inputImg;
 	while (true)
 	{
 		cap >> frame;
 
-		cv::Mat inputImg;
 		cv::cvtColor(frame, inputImg, cv::COLOR_BGR2GRAY);
 		cv::resize(inputImg, inputImg, cv::Size(28, 28), 0, 0, cv::INTER_AREA);
 		inputImg.convertTo(inputImg, CV_32F);
@@ -40,8 +39,9 @@ int main()
 		std::vector<std::pair<std::string, Tensor>> feedDict;
 		feedDict.push_back({ "input_input", imgTensor });
 
-		std::vector<cv::Mat> outputs = run(session, feedDict, {"outputs/Softmax"}, {});
-		cv::Mat output = outputs[0];
+		std::vector<Tensor> outputsTensor;
+		TF_CHECK_OK(session->Run(feedDict, { "outputs/Softmax" }, {}, &outputsTensor));
+		cv::Mat output = tensor2mat(outputsTensor[0])[0];
 
 		cv::Point maxIdx;
 		cv::minMaxLoc(output, NULL, NULL, NULL, &maxIdx);
@@ -55,23 +55,7 @@ int main()
 	return 0;
 }
 
-GraphDef loadGraph(std::string protobufFile)
-{
-	GraphDef graphDef;
-	TF_CHECK_OK(ReadBinaryProto(Env::Default(), protobufFile, &graphDef));
-	return graphDef;
-}
-
-Session* createSession(GraphDef graphDef, SessionOptions options)
-{
-	Session *session;
-	TF_CHECK_OK(NewSession(options, &session));
-	TF_CHECK_OK(session->Create(graphDef));
-	return session;
-}
-
-template <class T>
-Tensor mat2tensor(cv::Mat image, tensorflow::DataType type)
+template <class T> Tensor mat2tensor(cv::Mat image, tensorflow::DataType type)
 {
 	T *imageData = (T *)image.data;
 	TensorShape imageShape = TensorShape{ 1, image.rows, image.cols, image.channels() };
@@ -103,11 +87,4 @@ static std::vector<cv::Mat> tensor2mat(Tensor tensor)
 	}
 
 	return result;
-}
-
-std::vector<cv::Mat> run(Session *session, std::vector<std::pair<std::string, Tensor>> feedDict, std::vector<std::string> outputTensorNames, std::vector<std::string> targetNodeNames)
-{
-	std::vector<Tensor> outputsTensor;
-	TF_CHECK_OK(session->Run(feedDict, outputTensorNames, targetNodeNames, &outputsTensor));
-	return tensor2mat(outputsTensor[0]);
 }
