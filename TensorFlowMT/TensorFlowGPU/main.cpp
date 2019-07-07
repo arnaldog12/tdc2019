@@ -1,56 +1,90 @@
-#include <vector>
-
-// the two define below must be before #include <eigen/Dense>
-#define COMPILER_MSVC
-#define NOMINMAX
-
-#include <eigen/Dense>
 #include "tensorflow/core/public/session.h"
-#include "tensorflow/cc/ops/standard_ops.h"
+#include "tensorflow/core/protobuf/meta_graph.pb.h"
+
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
 
 using namespace tensorflow;
 
-// Build a computation graph that takes a tensor of shape [?, 2] and
-// multiplies it by a hard-coded matrix.
-GraphDef CreateGraphDef()
-{
-	Scope root = Scope::NewRootScope();
-
-	auto X = ops::Placeholder(root.WithOpName("x"), DT_FLOAT, ops::Placeholder::Shape({ -1, 2 }));
-	auto A = ops::Const(root, { { 3.f, 2.f },{ -1.f, 0.f } });
-	auto Y = ops::MatMul(root.WithOpName("y"), A, X, ops::MatMul::TransposeB(true));
-
-	GraphDef def;
-	TF_CHECK_OK(root.ToGraphDef(&def));
-	return def;
-}
+template <class T> Tensor mat2tensor(cv::Mat image, tensorflow::DataType type);
+std::vector<cv::Mat> tensor2mat(Tensor tensor);
 
 int main()
 {
-	GraphDef graph_def = CreateGraphDef();
+	cv::VideoCapture cap(0);
+	if (!cap.isOpened()) return 0;
 
-	// Start up the session
-	SessionOptions options;
-	std::unique_ptr<Session> session(NewSession(options));
-	TF_CHECK_OK(session->Create(graph_def));
+	cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
+	cap.set(cv::CAP_PROP_FRAME_WIDTH, 480);
 
-	// Define some data.  This needs to be converted to an Eigen Tensor to be
-	// fed into the placeholder.  Note that this will be broken up into two
-	// separate vectors of length 2: [1, 2] and [3, 4], which will separately
-	// be multiplied by the matrix.
-	std::vector<float> data = { 1, 2, 3, 4 };
-	auto mapped_X_ = Eigen::TensorMap<Eigen::Tensor<float, 2, Eigen::RowMajor>>(&data[0], 2, 2);
-	auto eigen_X_ = Eigen::Tensor<float, 2, Eigen::RowMajor>(mapped_X_);
+	GraphDef graphDef;
+	TF_CHECK_OK(ReadBinaryProto(Env::Default(), "../../models/best_model_ever.pb", &graphDef));
 
-	Tensor X_(DT_FLOAT, TensorShape({ 2, 2 }));
-	X_.tensor<float, 2>() = eigen_X_;
+	Session *session;
+	TF_CHECK_OK(NewSession(SessionOptions(), &session));
+	TF_CHECK_OK(session->Create(graphDef));
 
-	std::vector<Tensor> outputs;
-	TF_CHECK_OK(session->Run({ { "x", X_ } }, { "y" }, {}, &outputs));
+	cv::Mat frame, inputImg;
+	while (true)
+	{
+		cap >> frame;
 
-	// Get the result and print it out
-	Tensor Y_ = outputs[0];
-	std::cout << Y_.tensor<float, 2>() << std::endl;
+		cv::cvtColor(frame, inputImg, cv::COLOR_BGR2GRAY);
+		cv::resize(inputImg, inputImg, cv::Size(28, 28), 0, 0, cv::INTER_AREA);
+		inputImg.convertTo(inputImg, CV_32F);
 
-	session->Close();
+		Tensor imgTensor = mat2tensor<float>(inputImg / 255.0f, tensorflow::DT_FLOAT);
+
+		std::vector<std::pair<std::string, Tensor>> feedDict;
+		feedDict.push_back({ "input_input", imgTensor });
+
+		std::vector<Tensor> outputsTensor;
+		TF_CHECK_OK(session->Run(feedDict, { "outputs/Softmax" }, {}, &outputsTensor));
+		cv::Mat output = tensor2mat(outputsTensor[0])[0];
+
+		cv::Point maxIdx;
+		cv::minMaxLoc(output, NULL, NULL, NULL, &maxIdx);
+		int y_pred = maxIdx.x;
+
+		cv::putText(frame, cv::format("%d", y_pred), cv::Point(20, 100), cv::FONT_HERSHEY_TRIPLEX, 4, cv::Scalar(0, 255, 0), 3);
+		cv::imshow("frame", frame);
+		if (cv::waitKey(10) == 27) break;
+	}
+
+	return 0;
+}
+
+template <class T> Tensor mat2tensor(cv::Mat image, tensorflow::DataType type)
+{
+	T *imageData = (T *)image.data;
+	TensorShape imageShape = TensorShape{ 1, image.rows, image.cols, image.channels() };
+	Tensor imageTensor = Tensor(type, imageShape);
+	std::copy_n((char *)imageData, imageShape.num_elements() * sizeof(T), const_cast<char *>(imageTensor.tensor_data().data()));
+	return imageTensor;
+}
+
+static std::vector<cv::Mat> tensor2mat(Tensor tensor)
+{
+	TensorShape shape = tensor.shape();
+	int nDims = shape.dims();
+
+	int nImages = shape.dim_size(0);
+	int width = nDims > 2 ? shape.dim_size(2) : (nDims > 1 ? shape.dim_size(1) : shape.dim_size(0));
+	int height = nDims > 2 ? shape.dim_size(1) : 1;
+	int channels = (nDims == 4) ? shape.dim_size(3) : 1;
+
+	std::vector<cv::Mat> result;
+	for (int i = 0; i < nImages; i++)
+	{
+		Tensor slice = tensor.Slice(i, i + 1);
+		assert(slice.IsAligned() == true);
+
+		float *outputData = slice.flat<float>().data();
+		cv::Mat imgOut(cv::Size(width, height), CV_32FC(channels));
+		std::copy_n((char*)outputData, slice.shape().num_elements() * sizeof(float), (char*)imgOut.data);
+		result.push_back(imgOut);
+	}
+
+	return result;
 }
