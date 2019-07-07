@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\opencv\opencv-4.1.0\build_android\install\sdk\native\jni\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CLanguageStandard>c11</CLanguageStandard>
+      <CppLanguageStandard>c++11</CppLanguageStandard>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_calib3d.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_core.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_features2d.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_flann.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_highgui.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_imgcodecs.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_imgproc.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_ml.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_objdetect.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_photo.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_stitching.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_ts.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_video.a;C:\opencv\opencv-4.1.0\build_android\lib\armeabi-v7a\libopencv_videoio.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\libcpufeatures.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\libIlmImf.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\liblibjasper.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\liblibjpeg-turbo.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\liblibpng.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\liblibtiff.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\liblibwebp.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\libquirc.a;C:\opencv\opencv-4.1.0\build_android\3rdparty\lib\armeabi-v7a\libtegra_hal.a;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Link>
+      <WholeArchiveBegin>true</WholeArchiveBegin>
+    </Link>
+    <Link>
+      <AdditionalOptions>-z muldefs -ljnigraphics %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

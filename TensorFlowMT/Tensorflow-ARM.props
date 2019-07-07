@@ -6,9 +6,16 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\gen\host_obj;C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\gen\protobuf_android\armeabi-v7a\include;C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\downloads\eigen;C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\downloads\nsync\public;C:\tensorflow\tensorflow-cpu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <DataLevelLinking>false</DataLevelLinking>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories />
+      <AdditionalDependencies>C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\gen\lib\android_armeabi-v7a\libtensorflow-core.a;C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\gen\protobuf_android\armeabi-v7a\lib\libprotobuf.a;C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\gen\protobuf_android\armeabi-v7a\lib\libprotobuf-lite.a;C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\gen\protobuf_android\armeabi-v7a\lib\libprotoc.a;C:\tensorflow\tensorflow-cpu\tensorflow\contrib\makefile\downloads\nsync\builds\armeabi-v7a.android.c++11\nsync.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <WholeArchiveBegin>true</WholeArchiveBegin>
+      <AdditionalOptions>-z muldefs -ljnigraphics -s -lm -llog -landroid %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />
