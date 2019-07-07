@@ -69,10 +69,10 @@ static std::vector<cv::Mat> tensor2mat(Tensor tensor)
 	TensorShape shape = tensor.shape();
 	int nDims = shape.dims();
 
-	int nImages = shape.dim_size(0);
-	int width = nDims > 2 ? shape.dim_size(2) : (nDims > 1 ? shape.dim_size(1) : shape.dim_size(0));
-	int height = nDims > 2 ? shape.dim_size(1) : 1;
-	int channels = (nDims == 4) ? shape.dim_size(3) : 1;
+	int nImages = (int)shape.dim_size(0);
+	int width = (int)(nDims > 2 ? shape.dim_size(2) : (nDims > 1 ? shape.dim_size(1) : shape.dim_size(0)));
+	int height = nDims > 2 ? (int)shape.dim_size(1) : 1;
+	int channels = (nDims == 4) ? (int)shape.dim_size(3) : 1;
 
 	std::vector<cv::Mat> result;
 	for (int i = 0; i < nImages; i++)
