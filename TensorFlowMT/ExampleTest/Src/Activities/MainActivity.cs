@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
+using Android;
 using Android.App;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V4.App;
 using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
@@ -14,11 +17,13 @@ using FingerExample.Src.Extensions;
 namespace ExampleTest
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : AppCompatActivity, ActivityCompat.IOnRequestPermissionsResultCallback
     {
         private ImageView Preview { get; set; }
 
         private TextView TextResult { get; set; }
+
+        private View Layout { get; set; }
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
@@ -41,11 +46,43 @@ namespace ExampleTest
             Button buttonNext = FindViewById<Button>(Resource.Id.button_next);
             buttonNext.Click += NextClick;
 
+            Layout = FindViewById(Resource.Layout.activity_main);
 
-            await LoadImagesAsync();
+            CheckPermissions();
+            
             TextResult.Text = "" + index;
 
             Log.Debug("", this.GetExternalFilesDir(null).AbsolutePath);
+        }
+
+        private void CheckPermissions()
+        {
+            // Read External Storage
+            if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
+            {
+                if (ActivityCompat.ShouldShowRequestPermissionRationale(this, Manifest.Permission.ReadExternalStorage))
+                {
+                    // Provide an additional rationale to the user if the permission was not granted
+                    // and the user would benefit from additional context for the use of the permission.
+                    // For example if the user has previously denied the permission.
+                    Log.Info("MainActivity", "Displaying camera permission rationale to provide additional context.");
+                    var requiredPermissions = new String[] { Manifest.Permission.ReadExternalStorage };
+                    Snackbar.Make(Layout,
+                                   "Permission message",
+                                   Snackbar.LengthIndefinite)
+                            .SetAction("OK",
+                                       new Action<View>(delegate (View obj)
+                                       {
+                                           ActivityCompat.RequestPermissions(this, requiredPermissions, 0);
+                                       }
+                            )
+                    ).Show();
+                }
+                else
+                {
+                    ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.ReadExternalStorage }, 0);
+                }
+            }
         }
 
         private void PreviousClick(object sender, EventArgs e)
@@ -60,24 +97,11 @@ namespace ExampleTest
             index = ++index % filesList.Length;
             Process();
         }
-
-        //public override bool OnCreateOptionsMenu(IMenu menu)
-        //{
-        //    MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-        //    return true;
-        //}
-
-        //public override bool OnOptionsItemSelected(IMenuItem item)
-        //{
-        //    int id = item.ItemId;
-        //    if (id == Resource.Id.action_settings)
-        //    {
-        //        return true;
-        //    }
-
-        //    return base.OnOptionsItemSelected(item);
-        //}
-
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            LoadImagesAsync();
+        }
+        
 
         string folder;
         string[] filesList;
