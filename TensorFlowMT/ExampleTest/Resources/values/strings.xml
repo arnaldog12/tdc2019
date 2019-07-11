@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">ExampleTest</string>
+    <string name="action_settings">Settings</string>
+
+  <string name="action_yes">Sim</string>
+  <string name="action_no">Não</string>
+  <string name="action_refresh">Refresh</string>
+  <string name="action_photo">Foto</string>
+  <string name="action_crop">Cortar</string>
+  <string name="action_search">Buscar</string>
+  <string name="action_about">Sobre</string>
+  <string name="action_add">Adicionar</string>
+  <string name="action_add_finger">Adicionar dedos</string>
+  <string name="action_add_face">Adicionar Face</string>
+  <string name="action_face">Face</string>
+  <string name="action_finger">Dedos</string>
+  <string name="action_confirm">Confirmar</string>
+  <string name="action_cancel">Cancelar</string>
+  <string name="action_ok">Ok</string>
+  <string name="action_delete">Deletar</string>
+  <string name="action_switch">Trocar</string>
+
+  <string name="all_fields_required">Todos os campos são obrigatórios</string>
+  <string name="button_main_item_1">Cadastro de dedos</string>
+  <string name="button_main_item_2">Identificação de dedos</string>
+  <string name="button_main_item_3">Verificação de dedos</string>
+  <string name="button_main_item_4">Análise de Tempo</string>
+  <string name="biometricdata_choice_title">Selecione um ação</string>
+  <string name="biometricdata_face_not_found">Cadastro não possui registro de face</string>
+  <string name="biometric_required">Informações biométricas são obrigatórias</string>
+  <string name="biometrics_empty">Nenhum cadastro armazenado</string>
+  <string name="capture_canceled">Captura canceleda</string>
+  <string name="detect_face">Detectando face</string>
+  <string name="detect_face_fail">Face não encontrada</string>
+  <string name="delete_confirm">Deseja realmente deletar ?</string>
+  <string name="extracting_templates">Extraindo templates</string>
+  <string name="extracting_failed">Extração falhou</string>
+  <string name="fraud_activity_label">Detecção de fraude</string>
+  <string name="filter_list_hint">Filtrar pelo nome</string>
+  <string name="first_name_hint">Nome</string>
+  <string name="last_name_hint">Sobrenome</string>
+  <string name="identification_finger">Identificação de dedos</string>
+  <string name="identification_result">Resultado da identificação</string>
+  <string name="identification_success">Uma pessoa encontrada:</string>
+  <string name="identification_not_found">Nenhuma pessoa identificada</string>
+  <string name="init_image_processing">Iniciando processamento de imagem</string>
+  <string name="list_registers_activity_label">Cadastros</string>
+  <string name="matching_templates">Comparando templates</string>
+  <string name="match_result">Resultado da verificação</string>
+  <string name="match_success">Casamento bem-sucedido</string>
+  <string name="match_not_found">Casamento não encontrado</string>
+  <string name="processing">Processando</string>
+  <string name="register_finger">Adicionar dedos</string>
+  <string name="start_biopass">Carregando e preparando BioPass FaceEngine</string>
+  <string name="select_first">Primeiro selecione um cadastro</string>
+  <string name="wait">Aguarde</string>
+  <string name="detect_four_finger_fail">Quatro dedos não encontrados</string>
+  <string name="detect_finger">Detectando dedos</string>
+
+  <string name="register_activity_label">Registrar</string>
+  <string name="biometricdata_finger_not_found">Cadastro não possui registro de dedos</string>
+
+</resources>

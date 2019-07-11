@@ -48,12 +48,14 @@ extern "C"
 {
 	int predictDigit(unsigned char* data, int height, int width)
 	{
-		cv::Mat inputImg(cv::Size(width, height), CV_8UC1, data);
+		cv::Mat inputImg(cv::Size(width, height), CV_8UC4, data);
+		cv::cvtColor(inputImg, inputImg, cv::COLOR_RGBA2GRAY);
+		
 		cv::resize(inputImg, inputImg, cv::Size(28, 28), 0, 0, cv::INTER_AREA);
 		inputImg.convertTo(inputImg, CV_32F);
 		
 		GraphDef graphDef;
-		TF_CHECK_OK(ReadBinaryProto(Env::Default(), "../../models/best_model_ever.pb", &graphDef));
+		TF_CHECK_OK(ReadBinaryProto(Env::Default(), "/storage/emulated/0/Android/data/ExampleTest.ExampleTest/files/best_model_ever.pb", &graphDef));
 
 		Session *session;
 		TF_CHECK_OK(NewSession(SessionOptions(), &session));
