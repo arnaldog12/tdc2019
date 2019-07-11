@@ -30,14 +30,7 @@ namespace ExampleTest
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            //Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            //SetSupportActionBar(toolbar);
-
-            //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            //fab.Click += FabOnClick;
-
             TextResult = FindViewById<TextView>(Resource.Id.text_result);
-
             Preview = FindViewById<ImageView>(Resource.Id.img_view);
 
             Button buttonPrevious = FindViewById<Button>(Resource.Id.button_prev);
@@ -102,7 +95,6 @@ namespace ExampleTest
             LoadImagesAsync();
         }
         
-
         string folder;
         string[] filesList;
         int index = 0;
@@ -116,13 +108,9 @@ namespace ExampleTest
             folder = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + Java.IO.File.Separator + "Samples";
 
             if (Directory.Exists(folder))
-            {
                 filesList = Directory.GetFiles(folder);
-            }
             else
-            {
                 this.ShowAlert("Pasta não existe: ", folder);
-            }
 
             Process();
         }

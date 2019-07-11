@@ -50,7 +50,6 @@ extern "C"
 	{
 		cv::Mat inputImg(cv::Size(width, height), CV_8UC4, data);
 		cv::cvtColor(inputImg, inputImg, cv::COLOR_RGBA2GRAY);
-		
 		cv::resize(inputImg, inputImg, cv::Size(28, 28), 0, 0, cv::INTER_AREA);
 		inputImg.convertTo(inputImg, CV_32F);
 		
