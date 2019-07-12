@@ -42,6 +42,7 @@ namespace ExampleTest
             Layout = FindViewById(Resource.Layout.activity_main);
 
             CheckPermissions();
+            LoadImagesAsync();
             
             TextResult.Text = "" + index;
 
