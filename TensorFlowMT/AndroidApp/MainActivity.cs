@@ -10,10 +10,9 @@ using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using ExampleTest.Src.Wrapper;
-using FingerExample.Src.Extensions;
+using AndroidApp.Extensions;
 
-namespace ExampleTest
+namespace AndroidApp
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, ActivityCompat.IOnRequestPermissionsResultCallback
@@ -42,7 +41,7 @@ namespace ExampleTest
 
             CheckPermissions();
             LoadImagesAsync();
-            
+
             TextResult.Text = "" + index;
             Log.Debug("", this.GetExternalFilesDir(null).AbsolutePath);
         }
@@ -71,7 +70,7 @@ namespace ExampleTest
         private void PreviousClick(object sender, EventArgs e)
         {
             --index;
-            if (index < 0) index = filesList.Length-1;
+            if (index < 0) index = filesList.Length - 1;
             Process();
         }
 
@@ -84,7 +83,7 @@ namespace ExampleTest
         {
             LoadImagesAsync();
         }
-        
+
         string folder;
         string[] filesList;
         int index = 0;
@@ -109,14 +108,14 @@ namespace ExampleTest
             progress.Show();
 
             var filename = Path.GetFileName(filesList[index]);
-            var options = new Android.Graphics.BitmapFactory.Options { InScaled = false};
+            var options = new Android.Graphics.BitmapFactory.Options { InScaled = false };
 
             using (var bmp = await Android.Graphics.BitmapFactory.DecodeFileAsync(folder + Java.IO.File.Separator + filename, options))
             {
                 var handle = bmp.LockPixels();
                 var info = bmp.GetBitmapInfo();
 
-                int predict = ExampleWrapper.predictDigit(handle, (int)info.Height, (int)info.Height);
+                int predict = Wrapper.predictDigit(handle, (int)info.Height, (int)info.Height);
                 TextResult.Text = "" + predict;
 
                 if (Preview.Drawable is Android.Graphics.Drawables.BitmapDrawable temp)
