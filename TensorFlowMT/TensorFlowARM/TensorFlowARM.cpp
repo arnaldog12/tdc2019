@@ -54,7 +54,7 @@ extern "C"
 		inputImg.convertTo(inputImg, CV_32F);
 		
 		GraphDef graphDef;
-		TF_CHECK_OK(ReadBinaryProto(Env::Default(), "/storage/emulated/0/Android/data/ExampleTest.ExampleTest/files/best_model_ever.pb", &graphDef));
+		TF_CHECK_OK(ReadBinaryProto(Env::Default(), "/storage/emulated/0/Android/data/AndroidApp.AndroidApp/files/best_model_ever.pb", &graphDef));
 
 		Session *session;
 		TF_CHECK_OK(NewSession(SessionOptions(), &session));
