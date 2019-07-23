@@ -8,5 +8,7 @@ ___
 
 ## Materiais
 
-[Link para o Notebook Colab que treina o modelo usando Keras e converte para TensorFlow](https://colab.research.google.com/drive/1IQjCCUUV7ZlyDIz6E14-d8-Eh_ZjdT-o)
+- [Slides](https://www.icloud.com/keynote/0vfNmQdrVMPzy18zeOqg5Ro-A#TDC_2019_SP)
+
+- [Notebook Colab que treina o modelo usando Keras e converte para TensorFlow](https://colab.research.google.com/drive/1IQjCCUUV7ZlyDIz6E14-d8-Eh_ZjdT-o)
 
